@@ -1,0 +1,158 @@
+import { Theme, UISize, Images, ControlSize } from "@ui/theme.slint";
+import { Button } from "@ui/button.slint";
+import { IconButton } from "@ui/icon_button.slint";
+import { Navigate } from "../../gen/navigate.slint";
+import { AppState } from "../../state.slint";
+import { PageHeader } from "../../widgets.slint";
+
+component WordCell inherits Rectangle {
+    in property <int> number; // 1-based word number
+    height: 44px;
+    background: Theme.palette-card;
+    border-radius: Theme.radius-default;
+
+    HorizontalLayout {
+        padding-left: Theme.spacing-lg;
+        padding-right: Theme.spacing-lg;
+        spacing: Theme.spacing-md;
+
+        Text {
+            text: root.number + ".";
+            color: Theme.palette-muted;
+            font-family: Theme.font-primary;
+            font-size: Theme.font-size-body;
+            font-weight: Theme.font-weight-semibold;
+            vertical-alignment: center;
+            width: 34px;
+        }
+
+        Text {
+            text: root.number <= AppState.words.length ? AppState.words[root.number - 1] : "";
+            color: Theme.palette-foreground;
+            font-family: Theme.font-primary;
+            font-size: Theme.font-size-body;
+            font-weight: Theme.font-weight-semibold;
+            vertical-alignment: center;
+            horizontal-stretch: 1;
+        }
+    }
+}
+
+// Screen 6: Words screen (requirements 1.6 and 3)
+export component WordsPagePage inherits Rectangle {
+    background: Theme.palette-background;
+
+    // 12 words per page, two columns of six (req 3.1, 3.2)
+    property <int> page: 0;
+    property <int> page-count: AppState.word-count > 12 ? 2 : 1;
+
+    VerticalLayout {
+        width: parent.width;
+        height: parent.height;
+        padding-left: Theme.spacing-xl;
+        padding-right: Theme.spacing-xl;
+        padding-top: Theme.spacing-lg + UISize.control-center-status-bar-height;
+        padding-bottom: Theme.spacing-xl;
+        spacing: Theme.spacing-lg;
+
+        PageHeader {
+            title: "Your Seed Words";
+        }
+
+        HorizontalLayout {
+            spacing: Theme.spacing-lg;
+
+            VerticalLayout {
+                spacing: Theme.spacing-md;
+                horizontal-stretch: 1;
+
+                for i in 6: WordCell {
+                    number: root.page * 12 + i + 1;
+                }
+            }
+
+            VerticalLayout {
+                spacing: Theme.spacing-md;
+                horizontal-stretch: 1;
+
+                for i in 6: WordCell {
+                    number: root.page * 12 + i + 7;
+                }
+            }
+        }
+
+        // Back/forward page navigation for 24-word seeds (req 3.2)
+        if root.page-count > 1: HorizontalLayout {
+            alignment: center;
+            spacing: Theme.spacing-xl;
+
+            IconButton {
+                icon: Images.icon("chevron-left", 24px);
+                label: "Previous page";
+                variant: outlined;
+                disabled: root.page == 0;
+                clicked => {
+                    root.page = 0;
+                }
+            }
+
+            Text {
+                text: "Page " + (root.page + 1) + " of " + root.page-count;
+                color: Theme.palette-muted;
+                font-family: Theme.font-primary;
+                font-size: Theme.font-size-body;
+                font-weight: Theme.font-weight-semibold;
+                vertical-alignment: center;
+            }
+
+            IconButton {
+                icon: Images.icon("chevron-right", 24px);
+                label: "Next page";
+                variant: outlined;
+                disabled: root.page == root.page-count - 1;
+                clicked => {
+                    root.page = 1;
+                }
+            }
+        }
+
+        Rectangle {
+            vertical-stretch: 1;
+        }
+
+        // req 3.3: reminder above the buttons
+        Text {
+            text: "Be sure to write down your seed words";
+            color: Theme.palette-foreground;
+            font-family: Theme.font-primary;
+            font-size: Theme.font-size-body;
+            font-weight: Theme.font-weight-semibold;
+            wrap: word-wrap;
+            horizontal-alignment: center;
+        }
+
+        HorizontalLayout {
+            spacing: Theme.spacing-lg;
+
+            Button {
+                text: "Trust me!";
+                size: ControlSize.lg;
+                variant: secondary;
+                full-width: true;
+                clicked => {
+                    Navigate.main-page({ });
+                }
+            }
+
+            Button {
+                text: "Verify";
+                size: ControlSize.lg;
+                full-width: true;
+                clicked => {
+                    AppState.begin-verify();
+                    Navigate.verify-page({ });
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 200 200">
+  <defs>
+    <radialGradient id="bg8" cx="50%" cy="42%" r="70%">
+      <stop offset="0%" stop-color="#33251a"/>
+      <stop offset="100%" stop-color="#171009"/>
+    </radialGradient>
+    <linearGradient id="b8a" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#f2d18b"/>
+      <stop offset="45%" stop-color="#c8913f"/>
+      <stop offset="100%" stop-color="#7a4c20"/>
+    </linearGradient>
+    <linearGradient id="b8b" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#e8c684"/>
+      <stop offset="100%" stop-color="#8a5a2b"/>
+    </linearGradient>
+    <linearGradient id="b8c" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#a97434"/>
+      <stop offset="100%" stop-color="#5e3a18"/>
+    </linearGradient>
+    <linearGradient id="cop8" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#d98d58"/>
+      <stop offset="100%" stop-color="#7c452c"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="200" height="200" fill="url(#bg8)"/>
+  <ellipse cx="100" cy="176" rx="66" ry="12" fill="#000000" opacity="0.45"/>
+
+  <g transform="translate(100,98)">
+    <polygon points="0,-76 -64,8 0,28" fill="url(#b8b)" stroke="#3d2510" stroke-width="2.5"/>
+    <polygon points="0,-76 64,8 0,28" fill="url(#b8a)" stroke="#3d2510" stroke-width="2.5"/>
+    <polygon points="-64,8 0,74 0,28" fill="url(#b8c)" stroke="#3d2510" stroke-width="2.5"/>
+    <polygon points="64,8 0,74 0,28" fill="#6e4419" stroke="#3d2510" stroke-width="2.5"/>
+  </g>
+</svg>

@@ -1,0 +1,231 @@
+import { Theme, UISize, Images, ControlSize } from "@ui/theme.slint";
+import { Button } from "@ui/button.slint";
+import { Card } from "@ui/card.slint";
+import { Dialog } from "@ui/dialog.slint";
+import { IconButton } from "@ui/icon_button.slint";
+import { ProgressBar } from "@ui/progress_bar.slint";
+import { Navigate } from "../../gen/navigate.slint";
+import { AppState } from "../../state.slint";
+import { PageHeader } from "../../widgets.slint";
+
+component DieButton inherits Button {
+    in property <int> face;
+    text: face;
+    size: ControlSize.lg;
+    variant: secondary;
+    full-width: true;
+    clicked => {
+        AppState.roll(root.face);
+    }
+}
+
+// Screen 5: Dice rolling (requirements 1.5 and 2)
+export component RollingPagePage inherits Rectangle {
+    background: Theme.palette-background;
+
+    VerticalLayout {
+        width: parent.width;
+        height: parent.height;
+        padding-left: Theme.spacing-xl;
+        padding-right: Theme.spacing-xl;
+        padding-top: Theme.spacing-lg + UISize.control-center-status-bar-height;
+        padding-bottom: Theme.spacing-xl;
+        spacing: Theme.spacing-lg;
+
+        PageHeader {
+            title: "Roll the Dice";
+        }
+
+        // Completed words replace their progress bars here (req 2.6.1.1)
+        Card {
+            width: 100%;
+            title: AppState.words-so-far == "" ? "Ready to roll" : "Words so far";
+            body: AppState.words-so-far == "" ? "Roll your die and tap the matching face. Each roll adds entropy; finished words appear here." : AppState.words-so-far;
+        }
+
+        Rectangle {
+            vertical-stretch: 1;
+        }
+
+        // Overall entropy progress, directly above the word bar (req 2.1)
+        ProgressBar {
+            width: 100%;
+            label: "Bits: " + AppState.bits-collected + " of " + AppState.bits-target;
+            value: 100.0 * AppState.bits-collected / max(1, AppState.bits-target);
+            show-value-label: false;
+        }
+
+        // Current word progress (req 2.2, 2.6)
+        if !AppState.rolling-complete: ProgressBar {
+            width: 100%;
+            label: "Word " + AppState.current-word + " of " + AppState.word-count;
+            value: AppState.word-progress * 100;
+            show-value-label: false;
+        }
+
+        // Roll counter (req 2.4) and undo of the last roll (req 2.7).
+        // Backwards navigation is the device back button / back gesture;
+        // with rolls at stake it opens the cancel confirmation (req 2.8).
+        HorizontalLayout {
+            spacing: Theme.spacing-lg;
+
+            // Balances the undo button so the counter stays centered
+            Rectangle {
+                width: 44px;
+            }
+
+            Text {
+                text: AppState.rolling-complete
+                    ? "Dice rolls complete"
+                    : "Roll " + AppState.roll-number + " of " + AppState.roll-estimate + " (estimated)";
+                color: AppState.rolling-complete ? Theme.palette-foreground : Theme.palette-muted;
+                font-family: Theme.font-primary;
+                font-size: Theme.font-size-body;
+                font-weight: Theme.font-weight-semibold;
+                horizontal-alignment: center;
+                vertical-alignment: center;
+                horizontal-stretch: 1;
+            }
+
+            // Roll back the last dice roll; not the same as Back. Stays
+            // active after the final roll so it can be undone (req 2.7.1).
+            IconButton {
+                icon: Images.icon("arrow-left", 24px);
+                label: "Undo last roll";
+                variant: outlined;
+                disabled: AppState.roll-number <= 1;
+                clicked => {
+                    AppState.undo-roll();
+                }
+            }
+        }
+
+        // Dice face buttons with the selected die pictured on the left
+        // (req 2.3), replaced by Continue when done (req 2.9.2)
+        if !AppState.rolling-complete: HorizontalLayout {
+            spacing: Theme.spacing-lg;
+
+            Rectangle {
+                width: 96px;
+                // Match the two lg button rows plus their spacing.
+                height: 152px;
+                background: Theme.palette-card;
+                border-radius: Theme.radius-default;
+                clip: true;
+
+                Image {
+                    width: parent.width;
+                    height: parent.height;
+                    source: AppState.die-sides == 8 ? Images.image("die-d8-roll") : Images.image("die-d6-roll");
+                    image-fit: cover;
+                }
+            }
+
+            if AppState.die-sides == 6: VerticalLayout {
+                spacing: Theme.spacing-lg;
+                horizontal-stretch: 1;
+
+                HorizontalLayout {
+                    spacing: Theme.spacing-lg;
+                    DieButton { face: 1; }
+                    DieButton { face: 2; }
+                    DieButton { face: 3; }
+                }
+
+                HorizontalLayout {
+                    spacing: Theme.spacing-lg;
+                    DieButton { face: 4; }
+                    DieButton { face: 5; }
+                    DieButton { face: 6; }
+                }
+            }
+
+            if AppState.die-sides == 8: VerticalLayout {
+                spacing: Theme.spacing-lg;
+                horizontal-stretch: 1;
+
+                HorizontalLayout {
+                    spacing: Theme.spacing-lg;
+                    DieButton { face: 1; }
+                    DieButton { face: 2; }
+                    DieButton { face: 3; }
+                    DieButton { face: 4; }
+                }
+
+                HorizontalLayout {
+                    spacing: Theme.spacing-lg;
+                    DieButton { face: 5; }
+                    DieButton { face: 6; }
+                    DieButton { face: 7; }
+                    DieButton { face: 8; }
+                }
+            }
+        }
+
+        if AppState.rolling-complete: Button {
+            width: 100%;
+            text: "Continue";
+            size: ControlSize.lg;
+            full-width: true;
+            clicked => {
+                AppState.leave-rolling();
+                Navigate.words-page({ });
+            }
+        }
+    }
+
+    // Confirmation before discarding rolls (req 2.8)
+    if AppState.cancel-dialog-open: Dialog {
+        width: parent.width;
+        height: parent.height;
+        open: true;
+        variant: danger;
+        dismissed => {
+            AppState.cancel-dialog-open = false;
+        }
+
+        Text {
+            text: "Cancel dice rolling?";
+            color: Theme.palette-foreground;
+            font-family: Theme.font-primary;
+            font-size: Theme.font-size-title;
+            font-weight: Theme.font-weight-bold;
+            wrap: word-wrap;
+        }
+
+        Text {
+            text: "All " + (AppState.roll-number - 1) + " dice rolls so far will be discarded.";
+            color: Theme.palette-muted;
+            font-family: Theme.font-primary;
+            font-size: Theme.font-size-body;
+            font-weight: Theme.font-weight-medium;
+            wrap: word-wrap;
+        }
+
+        HorizontalLayout {
+            spacing: Theme.spacing-lg;
+
+            Button {
+                text: "Keep rolling";
+                size: ControlSize.md;
+                variant: secondary;
+                full-width: true;
+                clicked => {
+                    AppState.cancel-dialog-open = false;
+                }
+            }
+
+            Button {
+                text: "Discard";
+                size: ControlSize.md;
+                variant: danger;
+                full-width: true;
+                clicked => {
+                    AppState.cancel-dialog-open = false;
+                    AppState.cancel-rolling();
+                    Navigate.backward();
+                }
+            }
+        }
+    }
+}

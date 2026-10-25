@@ -1,0 +1,19 @@
+import {
+    Theme,
+    UISize,
+    Images,
+} from "@ui/theme.slint";
+import { Router } from "gen/router.slint";
+import { AppState } from "state.slint";
+
+export { Theme, Images, AppState }
+export * from "gen/exports.slint";
+
+export component AppWindow inherits Window {
+    title: "DiceSeed";
+    preferred-width: UISize.screen-width;
+    preferred-height: UISize.screen-height;
+    background: Theme.palette-background;
+
+    Router { }
+}

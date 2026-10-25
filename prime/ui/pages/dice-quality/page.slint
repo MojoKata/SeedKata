@@ -1,0 +1,84 @@
+import { Theme, UISize, ControlSize } from "@ui/theme.slint";
+import { Button } from "@ui/button.slint";
+import { Card } from "@ui/card.slint";
+import { Navigate } from "../../gen/navigate.slint";
+import { AppState } from "../../state.slint";
+import { PageHeader } from "../../widgets.slint";
+
+// Screen 4: Dice Quality (requirement 1.4)
+export component DiceQualityPagePage inherits Rectangle {
+    background: Theme.palette-background;
+
+    function start(quality: int) {
+        AppState.quality = quality;
+        AppState.begin-rolling();
+        Navigate.rolling-page({ });
+    }
+
+    VerticalLayout {
+        width: parent.width;
+        height: parent.height;
+        padding-left: Theme.spacing-xl;
+        padding-right: Theme.spacing-xl;
+        padding-top: Theme.spacing-lg + UISize.control-center-status-bar-height;
+        padding-bottom: Theme.spacing-xl;
+        spacing: Theme.spacing-xl;
+
+        PageHeader {
+            title: "Dice Quality";
+        }
+
+        Card {
+            width: 100%;
+            title: "How fair are your dice?";
+            body: "Real dice are rarely perfect. DiceSeed can compensate for biased dice by collecting additional rolls — the more suspicious you are of your dice, the more extra rolls it asks for (shown as a multiplier).";
+        }
+
+        Rectangle {
+            vertical-stretch: 1;
+        }
+
+        Button {
+            width: 100%;
+            text: "I trust them (1x)";
+            size: ControlSize.lg;
+            full-width: true;
+            clicked => {
+                root.start(0);
+            }
+        }
+
+        Button {
+            width: 100%;
+            text: "Maybe biased (~1.5x)";
+            size: ControlSize.lg;
+            variant: secondary;
+            full-width: true;
+            clicked => {
+                root.start(1);
+            }
+        }
+
+        Button {
+            width: 100%;
+            text: "Very sus (2x)";
+            size: ControlSize.lg;
+            variant: secondary;
+            full-width: true;
+            clicked => {
+                root.start(2);
+            }
+        }
+
+        Button {
+            width: 100%;
+            text: "Maybe loaded (~4-7x)";
+            size: ControlSize.lg;
+            variant: secondary;
+            full-width: true;
+            clicked => {
+                root.start(3);
+            }
+        }
+    }
+}

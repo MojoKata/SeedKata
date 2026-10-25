@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 190 300">
+  <defs>
+    <radialGradient id="bgr8" cx="50%" cy="45%" r="75%">
+      <stop offset="0%" stop-color="#3b2b1e"/>
+      <stop offset="55%" stop-color="#241a12"/>
+      <stop offset="100%" stop-color="#120c08"/>
+    </radialGradient>
+    <linearGradient id="br8a" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#f2d18b"/>
+      <stop offset="45%" stop-color="#c8913f"/>
+      <stop offset="100%" stop-color="#7a4c20"/>
+    </linearGradient>
+    <linearGradient id="br8b" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#e8c684"/>
+      <stop offset="100%" stop-color="#8a5a2b"/>
+    </linearGradient>
+    <linearGradient id="br8c" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#a97434"/>
+      <stop offset="100%" stop-color="#5e3a18"/>
+    </linearGradient>
+    <linearGradient id="steelr8" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#8f8a80"/>
+      <stop offset="100%" stop-color="#4a453d"/>
+    </linearGradient>
+    <g id="gearr8">
+      <g fill="url(#steelr8)">
+        <rect x="-5" y="-46" width="10" height="14" rx="2"/>
+        <rect x="-5" y="32" width="10" height="14" rx="2"/>
+        <rect x="-46" y="-5" width="14" height="10" rx="2"/>
+        <rect x="32" y="-5" width="14" height="10" rx="2"/>
+        <rect x="-5" y="-46" width="10" height="14" rx="2" transform="rotate(45)"/>
+        <rect x="-5" y="32" width="10" height="14" rx="2" transform="rotate(45)"/>
+        <rect x="-46" y="-5" width="14" height="10" rx="2" transform="rotate(45)"/>
+        <rect x="32" y="-5" width="14" height="10" rx="2" transform="rotate(45)"/>
+      </g>
+      <circle r="36" fill="url(#steelr8)" stroke="#2a2622" stroke-width="2"/>
+      <circle r="22" fill="#1d1712"/>
+      <circle r="9" fill="url(#br8c)" stroke="#2a2622" stroke-width="2"/>
+    </g>
+  </defs>
+
+  <rect width="190" height="300" fill="url(#bgr8)"/>
+
+  <!-- steampunk gears tucked into the spare background -->
+  <use xlink:href="#gearr8" transform="translate(16,32) scale(0.65) rotate(18)" opacity="0.5"/>
+  <use xlink:href="#gearr8" transform="translate(176,268) scale(0.8) rotate(-10)" opacity="0.45"/>
+
+  <ellipse cx="95" cy="270" rx="72" ry="13" fill="#000000" opacity="0.45"/>
+
+  <g transform="translate(95,150)">
+    <polygon points="0,-106 -90,11 0,39" fill="url(#br8b)" stroke="#3d2510" stroke-width="3"/>
+    <polygon points="0,-106 90,11 0,39" fill="url(#br8a)" stroke="#3d2510" stroke-width="3"/>
+    <polygon points="-90,11 0,104 0,39" fill="url(#br8c)" stroke="#3d2510" stroke-width="3"/>
+    <polygon points="90,11 0,104 0,39" fill="#6e4419" stroke="#3d2510" stroke-width="3"/>
+  </g>
+</svg>

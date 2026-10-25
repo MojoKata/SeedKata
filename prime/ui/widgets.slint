@@ -1,0 +1,25 @@
+// Small shared widgets.
+
+import { Theme } from "@ui/theme.slint";
+
+// Title bar. Backwards navigation (requirement 1.8) uses the KeyOS
+// platform edge-swipe: swipe right from the left screen edge, handled by
+// the slint-keyos-platform runtime on every routed page. A header back
+// button is not used because the system control-center overlay owns the
+// touch zone at the top of the screen.
+export component PageHeader inherits Rectangle {
+    in property <string> title;
+    height: 44px;
+
+    Text {
+        width: parent.width;
+        height: parent.height;
+        text: root.title;
+        color: Theme.palette-foreground;
+        font-family: Theme.font-primary;
+        font-size: Theme.font-size-title;
+        font-weight: Theme.font-weight-bold;
+        horizontal-alignment: center;
+        vertical-alignment: center;
+    }
+}

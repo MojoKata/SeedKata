@@ -1,0 +1,18 @@
+# Prime app (generated)
+prime/target/
+prime/.foundation-sdk/
+prime/ui/ui
+prime/manifest.toml
+
+# Android app (generated)
+droid/.gradle/
+droid/build/
+droid/app/build/
+droid/local.properties
+
+# Signing material (never distribute)
+droid/keystore.properties
+droid/release.keystore
+
+# Build outputs
+/releases/

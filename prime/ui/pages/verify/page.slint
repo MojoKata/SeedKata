@@ -1,0 +1,91 @@
+import { Theme, UISize, ControlSize } from "@ui/theme.slint";
+import { Button } from "@ui/button.slint";
+import { Card } from "@ui/card.slint";
+import { Navigate } from "../../gen/navigate.slint";
+import { AppState } from "../../state.slint";
+import { PageHeader } from "../../widgets.slint";
+
+component CandidateButton inherits Button {
+    in property <int> idx;
+    text: root.idx < AppState.verify-candidates.length ? AppState.verify-candidates[root.idx] : "";
+    size: ControlSize.lg;
+    // Wrong picks turn red (req 4.4)
+    variant: root.idx < AppState.verify-wrong.length && AppState.verify-wrong[root.idx] ? danger : secondary;
+    full-width: true;
+    clicked => {
+        AppState.verify-select(root.idx);
+    }
+}
+
+// Screen 7: Verify screen (requirements 1.7 and 4)
+export component VerifyPagePage inherits Rectangle {
+    background: Theme.palette-background;
+
+    VerticalLayout {
+        width: parent.width;
+        height: parent.height;
+        padding-left: Theme.spacing-xl;
+        padding-right: Theme.spacing-xl;
+        padding-top: Theme.spacing-lg + UISize.control-center-status-bar-height;
+        padding-bottom: Theme.spacing-xl;
+        spacing: Theme.spacing-lg;
+
+        PageHeader {
+            title: "Verify";
+        }
+
+        if !AppState.verify-complete: Card {
+            width: 100%;
+            title: "Which is word #" + AppState.verify-word-number + "?";
+            body: "Check your written backup and tap the matching word. Every word is verified once, in random order.";
+            footer: "Verified " + (AppState.verify-step - 1) + " of " + AppState.word-count;
+        }
+
+        if AppState.verify-complete: Card {
+            width: 100%;
+            title: "All words verified!";
+            body: "Your written backup matches the generated seed phrase. Keep it safe and private.";
+        }
+
+        Rectangle {
+            height: Theme.spacing-lg;
+        }
+
+        // Two columns of three candidates (req 4.2)
+        if !AppState.verify-complete: HorizontalLayout {
+            spacing: Theme.spacing-lg;
+
+            VerticalLayout {
+                spacing: Theme.spacing-lg;
+                horizontal-stretch: 1;
+
+                for i in 3: CandidateButton {
+                    idx: i;
+                }
+            }
+
+            VerticalLayout {
+                spacing: Theme.spacing-lg;
+                horizontal-stretch: 1;
+
+                for i in 3: CandidateButton {
+                    idx: i + 3;
+                }
+            }
+        }
+
+        Rectangle {
+            vertical-stretch: 1;
+        }
+
+        if AppState.verify-complete: Button {
+            width: 100%;
+            text: "Done";
+            size: ControlSize.lg;
+            full-width: true;
+            clicked => {
+                Navigate.main-page({ });
+            }
+        }
+    }
+}

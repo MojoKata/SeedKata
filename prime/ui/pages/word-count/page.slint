@@ -1,0 +1,58 @@
+import { Theme, UISize, ControlSize } from "@ui/theme.slint";
+import { Button } from "@ui/button.slint";
+import { Card } from "@ui/card.slint";
+import { Navigate } from "../../gen/navigate.slint";
+import { AppState } from "../../state.slint";
+import { PageHeader } from "../../widgets.slint";
+
+// Screen 2: Word selection (requirement 1.2)
+export component WordCountPagePage inherits Rectangle {
+    background: Theme.palette-background;
+
+    VerticalLayout {
+        width: parent.width;
+        height: parent.height;
+        padding-left: Theme.spacing-xl;
+        padding-right: Theme.spacing-xl;
+        padding-top: Theme.spacing-lg + UISize.control-center-status-bar-height;
+        padding-bottom: Theme.spacing-xl;
+        spacing: Theme.spacing-xl;
+
+        PageHeader {
+            title: "Seed Length";
+        }
+
+        Card {
+            width: 100%;
+            title: "How long should your seed be?";
+            body: "12 words carry 128 bits of entropy — the Bitcoin standard, secure for virtually all uses, and needs fewer rolls. 24 words carry 256 bits — the maximum, with roughly twice the rolling.";
+        }
+
+        Rectangle {
+            vertical-stretch: 1;
+        }
+
+        Button {
+            width: 100%;
+            text: "12 words";
+            size: ControlSize.lg;
+            full-width: true;
+            clicked => {
+                AppState.word-count = 12;
+                Navigate.die-type-page({ });
+            }
+        }
+
+        Button {
+            width: 100%;
+            text: "24 words";
+            size: ControlSize.lg;
+            variant: secondary;
+            full-width: true;
+            clicked => {
+                AppState.word-count = 24;
+                Navigate.die-type-page({ });
+            }
+        }
+    }
+}

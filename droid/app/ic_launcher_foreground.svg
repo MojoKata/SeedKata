@@ -1,0 +1,52 @@
+<svg width="432" height="432" viewBox="0 0 432 432" xmlns="http://www.w3.org/2000/svg">
+  <!-- Adaptive-icon foreground layer: transparent background; the dice fill
+       the mask-safe zone (the central ~66/108 of the canvas) so they render
+       as large as launchers allow. Render with:
+       rsvg-convert -w 432 -h 432 ic_launcher_foreground.svg \
+         -o src/main/res/drawable-nodpi/ic_launcher_foreground.png -->
+  <defs>
+    <linearGradient id="fgTop" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#e8a06a"/>
+      <stop offset="50%" stop-color="#b0623c"/>
+      <stop offset="100%" stop-color="#5f3222"/>
+    </linearGradient>
+    <linearGradient id="fgLeft" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#d98d58"/>
+      <stop offset="100%" stop-color="#7c452c"/>
+    </linearGradient>
+    <linearGradient id="fgB1" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#e8c684"/>
+      <stop offset="100%" stop-color="#8a5a2b"/>
+    </linearGradient>
+    <linearGradient id="fgB2" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#f2d18b"/>
+      <stop offset="45%" stop-color="#c8913f"/>
+      <stop offset="100%" stop-color="#7a4c20"/>
+    </linearGradient>
+    <linearGradient id="fgB3" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#a97434"/>
+      <stop offset="100%" stop-color="#5e3a18"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Scale chosen so the farthest die vertices (~104 local units from the
+       glyph centre) sit just inside the 132px-radius circular safe zone. -->
+  <g transform="translate(216 216) scale(1.22)">
+    <ellipse cx="3" cy="88" rx="60" ry="9" fill="#000000" opacity="0.45"/>
+
+    <!-- copper d6, behind and to the upper left -->
+    <g transform="translate(-28 -36)">
+      <polygon points="0,-62 52,-31 0,0 -52,-31" fill="url(#fgTop)" stroke="#2c1a0c" stroke-width="4"/>
+      <polygon points="-52,-31 0,0 0,62 -52,31" fill="url(#fgLeft)" stroke="#2c1a0c" stroke-width="4"/>
+      <polygon points="52,-31 0,0 0,62 52,31" fill="#6b3a24" stroke="#2c1a0c" stroke-width="4"/>
+    </g>
+
+    <!-- brass d8 in front, lower right -->
+    <g transform="translate(34 2)">
+      <polygon points="0,-64 -52,7 0,23" fill="url(#fgB1)" stroke="#3d2510" stroke-width="4"/>
+      <polygon points="0,-64 52,7 0,23" fill="url(#fgB2)" stroke="#3d2510" stroke-width="4"/>
+      <polygon points="-52,7 0,62 0,23" fill="url(#fgB3)" stroke="#3d2510" stroke-width="4"/>
+      <polygon points="52,7 0,62 0,23" fill="#6e4419" stroke="#3d2510" stroke-width="4"/>
+    </g>
+  </g>
+</svg>

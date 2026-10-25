@@ -1,0 +1,14 @@
+<svg width="432" height="432" viewBox="0 0 432 432" xmlns="http://www.w3.org/2000/svg">
+  <!-- Adaptive-icon background layer: full-bleed, edge to edge — the
+       launcher crops it to its mask shape. Render with:
+       rsvg-convert -w 432 -h 432 ic_launcher_background.svg \
+         -o src/main/res/drawable-nodpi/ic_launcher_background.png -->
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="42%" r="75%">
+      <stop offset="0%" stop-color="#3b2b1e"/>
+      <stop offset="55%" stop-color="#241a12"/>
+      <stop offset="100%" stop-color="#120c08"/>
+    </radialGradient>
+  </defs>
+  <rect width="432" height="432" fill="url(#bg)"/>
+</svg>

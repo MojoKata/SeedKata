@@ -1,0 +1,43 @@
+// Shared app state and callbacks bridged to Rust (src/main.rs).
+
+export global AppState {
+    // Session configuration
+    in-out property <int> word-count: 12;
+    in-out property <int> die-sides: 6;
+    // Dice quality: 0 = trust (bit-mapping), 1 = maybe biased (hash
+    // conditioning), 2 = very sus (modular sum of 2 rolls), 3 = maybe
+    // loaded (pairwise comparison)
+    in-out property <int> quality: 3;
+
+    // Rolling progress
+    in-out property <int> bits-collected: 0;
+    in-out property <int> bits-target: 128;
+    in-out property <int> roll-number: 1;
+    in-out property <int> roll-estimate: 0;
+    in-out property <string> words-so-far: "";
+    in-out property <int> current-word: 1;
+    in-out property <float> word-progress: 0.0;
+    in-out property <bool> rolling-complete: false;
+
+    // Seed words (completed)
+    in-out property <[string]> words: [];
+
+    // Verification
+    // Opened when backwards navigation is attempted with rolls at stake
+    in-out property <bool> cancel-dialog-open: false;
+
+    in-out property <int> verify-step: 1;
+    in-out property <int> verify-word-number: 1;
+    in-out property <[string]> verify-candidates: [];
+    in-out property <[bool]> verify-wrong: [];
+    in-out property <bool> verify-complete: false;
+
+    // Handled in Rust
+    callback begin-rolling();
+    callback roll(int);
+    callback undo-roll();
+    callback cancel-rolling();
+    callback leave-rolling();
+    callback begin-verify();
+    callback verify-select(int);
+}
