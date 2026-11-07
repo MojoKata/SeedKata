@@ -38,3 +38,20 @@ Apps > Developer Mode); with it off, the connection is unavailable. On Linux, US
 udev rules shipped at `<sdk-root>/share/99-passport.rules`; a permission error opening the device means they
 are not installed (copy the file to `/etc/udev/rules.d/` and reload udev). Only drive hardware when the user
 asks for on-device work.
+
+## Large downloads and shared VMs
+
+Installer ISOs and other large downloads, and VMs that projects share, follow the
+[coworker protocol](https://github.com/MojoKata/coworker): its commands are installed in
+`~/coworker/bin` by that repository's `install.sh` (`COWORKER_HOME` moves the whole folder). A
+download lives in `~/coworker/downloads` beside its SHA-256; a project that needs one claims it
+under its own name (here `diceseed`), which leaves an empty `<file>.diceseed`, and it goes only with
+the last claim:
+
+    ~/coworker/bin/downloads fetch FILE diceseed URL SHA_URL    # fetches (resuming), checks, claims
+    ~/coworker/bin/downloads claim FILE diceseed
+    ~/coworker/bin/downloads release FILE diceseed
+    ~/coworker/bin/downloads list [--verify]
+
+Shared VMs are in `~/coworker/vms`, used one project at a time (`~/coworker/bin/vms lock`). Never
+download into this repository's folders. DiceSeed claims no download and no VM today.
