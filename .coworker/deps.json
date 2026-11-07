@@ -156,5 +156,15 @@
       "host": "production.cloudflare.docker.com",
       "why": "Docker Hub: image layers"
     }
+  ],
+  "container_images": [
+    {
+      "image": "nixos/nix:2.35.4@sha256:f159a58f390677f41e8e900a74b6e2f9c7f27b364122ae6acf7a652ce6c551c0",
+      "why": "make prime: the Foundation SDK's Nix shell (nix develop on ~/.foundation/sdk/current), which builds, signs and packs the Prime app"
+    },
+    {
+      "image": "eclipse-temurin:17-jdk@sha256:43338b737d0f75d6883d3c4563bc66974113ca8ac296e82f39d161fb3d398f0d",
+      "why": "make droid: Gradle and the Android build on JDK 17 (jvmTarget 17)"
+    }
   ]
 }
