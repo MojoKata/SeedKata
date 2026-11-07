@@ -58,8 +58,9 @@ the last claim:
 Shared VMs are in `~/coworker/vms`, used one project at a time through `coworker/bin/vms run`.
 Never download into this repository's folders. SeedKata claims no download and no VM today.
 
-What the machine needs for SeedKata (make, zip, the Foundation SDK, Nix, JDK 17, the Android SDK's
-platform 34 and build tools, and the hosts the builds reach) is in `.coworker/deps.json`, each with
+What the machine needs for SeedKata (make, zip, Docker, the Foundation SDK, the Android SDK's
+platform 34 and build tools, and the hosts the builds reach; Nix and JDK 17 come in the build
+containers, README.md, "Building") is in `.coworker/deps.json`, each with
 why. Every `make` run registers SeedKata with coworker (`deps register`) and says what the machine
 lacks; it stops on a coworker protocol that doesn't match. `coworker/bin/coworker status` lists
 what's missing and the command for each: `deps install` for what a user can install, the tools'

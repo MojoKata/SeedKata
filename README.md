@@ -63,10 +63,16 @@ make droid   # Android .apk           -> releases/droid/ (+ .sha256)
 make all     # both
 ```
 
+Both build in containers, so the host needs Docker rather than Nix or a JDK: `make prime` in
+`nixos/nix` (the SDK's Nix shell), `make droid` in `eclipse-temurin:17-jdk`, each pinned by digest
+in the `Makefile`. The Nix store and the Gradle cache stay in Docker volumes (`seedkata-nix`,
+`seedkata-home`, `seedkata-gradle`), so a rebuild is fast; `docker volume rm` them to start over.
+
 ### Prime prerequisites
 
-- Foundation SDK (`curl -sSfL https://sdk.foundation.xyz/latest/install.sh | bash`)
-  and Nix; see `foundation doctor`.
+- Foundation SDK (`curl -sSfL https://sdk.foundation.xyz/latest/install.sh | bash`), in
+  `~/.foundation`; the build mounts it read-only into the Nix container (Nix itself comes with
+  the container).
 - A publisher signing identity (`foundation cert gen`); the packed `.app`
   embeds it. Install on device: Settings > Apps > Install App from a USB
   drive, then confirm the publisher fingerprint.
@@ -75,7 +81,8 @@ make all     # both
 
 ### Droid prerequisites
 
-- JDK 17, Gradle 8.7+, Android SDK (`ANDROID_HOME`, platform 34).
+- Android SDK (`ANDROID_HOME`, `~/android-sdk` unless set; platform 34 and build tools 34),
+  mounted read-only into the JDK 17 container. Gradle comes with the wrapper.
 - The release APK is signed with the local keystore configured in
   `droid/keystore.properties` (not committed).
 - Install: `adb install releases/droid/diceseed.apk`.
