@@ -1,13 +1,10 @@
 SHELL := /bin/bash
 
-# The coworker protocol (MojoKata/coworker): every make run remembers SeedKata on this machine and
-# says what it lacks of .coworker/deps.json (~/coworker/bin/deps check . lists it); it stops if
-# coworker isn't installed.
-COWORKER_HOME ?= $(HOME)/coworker
-ifeq ($(wildcard $(COWORKER_HOME)/bin/deps),)
-$(error coworker isn't installed in $(COWORKER_HOME): run install.sh from a checkout of MojoKata/coworker)
-endif
-ifneq ($(shell "$(COWORKER_HOME)/bin/deps" register "$(CURDIR)" >&2 || echo failed),)
+# The coworker protocol (the coworker/ submodule, MojoKata/coworker): every make run remembers
+# SeedKata on this machine and says what it lacks of .coworker/deps.json (coworker/bin/coworker
+# status lists it). The submodule checks the installed coworker: it stops the run on a protocol
+# that doesn't match (exit 3, with what to run), and only says so when none is installed.
+ifneq ($(shell "$(CURDIR)/coworker/bin/deps" register "$(CURDIR)" >&2 || echo failed),)
 $(error coworker: deps register failed (above))
 endif
 
