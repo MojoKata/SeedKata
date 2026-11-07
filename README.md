@@ -52,6 +52,7 @@ screenshots/  One PNG per screen/state
   droid/        rendered by the ScreenshotWalk test (Robolectric)
 releases/     Built artifacts + sha256 files (make prime / make droid)
 Makefile      Build entry points
+repo-admin.sh The GitHub repository's settings (Repository settings, below)
 ```
 
 ## Building
@@ -88,3 +89,11 @@ cd releases/droid && sha256sum -c diceseed.apk.sha256
 
 Prime publisher fingerprint (confirm on device at install):
 `02b1ee1496c5fe753ed01dfc4411cf104b876012bec4e9711be4329b9d892ade`
+
+## Repository settings
+
+`repo-admin.sh check` reads this repository's GitHub settings back (exit 1 when one differs); `repo-admin.sh
+apply`, run by an admin with `gh` logged in, sets them: a ruleset on `master` (a pull request to
+merge, squash only, no force push or deletion), squash merging only with the branch deleted once merged, the Actions token
+read-only, actions pinned by SHA, fork pull requests' runs approved first, and private vulnerability
+reporting. Each MojoKata repository has the same script; only its settings block differs.
