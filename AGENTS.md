@@ -53,5 +53,12 @@ the last claim:
     ~/coworker/bin/downloads release FILE diceseed
     ~/coworker/bin/downloads list [--verify]
 
-Shared VMs are in `~/coworker/vms`, used one project at a time (`~/coworker/bin/vms lock`). Never
-download into this repository's folders. DiceSeed claims no download and no VM today.
+Shared VMs are in `~/coworker/vms`, used one project at a time through `~/coworker/bin/vms run`.
+Never download into this repository's folders. DiceSeed claims no download and no VM today.
+
+What the machine needs for DiceSeed (make, zip, the Foundation SDK, Nix, JDK 17, the Android SDK's
+platform 34 and build tools, and the hosts the builds reach) is in `.coworker/deps.json`, each with
+why. Every `make` run registers DiceSeed with coworker (`deps register`) and says what the machine
+lacks; it stops if coworker isn't installed. `~/coworker/bin/deps check .` lists what's missing,
+`deps install .` installs what a user can and prints how to get the tools that have their own
+installers, and the host packages are the machine owner's: `sudo ~/coworker/bin/deps install --sudo`.

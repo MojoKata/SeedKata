@@ -1,5 +1,16 @@
 SHELL := /bin/bash
 
+# The coworker protocol (MojoKata/coworker): every make run remembers DiceSeed on this machine and
+# says what it lacks of .coworker/deps.json (~/coworker/bin/deps check . lists it); it stops if
+# coworker isn't installed.
+COWORKER_HOME ?= $(HOME)/coworker
+ifeq ($(wildcard $(COWORKER_HOME)/bin/deps),)
+$(error coworker isn't installed in $(COWORKER_HOME): run install.sh from a checkout of MojoKata/coworker)
+endif
+ifneq ($(shell "$(COWORKER_HOME)/bin/deps" register "$(CURDIR)" >&2 || echo failed),)
+$(error coworker: deps register failed (above))
+endif
+
 FOUNDATION_SDK_ROOT ?= $(HOME)/.foundation/sdk/current
 ANDROID_HOME ?= $(HOME)/android-sdk
 JAVA_HOME ?= $(HOME)/.nix-profile/lib/openjdk
