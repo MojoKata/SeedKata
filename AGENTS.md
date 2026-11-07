@@ -45,12 +45,12 @@ Installer ISOs and other large downloads, and VMs that projects share, follow th
 [coworker protocol](https://github.com/MojoKata/coworker): its commands are installed in
 `~/coworker/bin` by that repository's `install.sh` (`COWORKER_HOME` moves the whole folder). A
 download lives in `~/coworker/downloads` beside its SHA-256; a project that needs one claims it
-under its own name (here `seedkata`), which leaves an empty `<file>.seedkata`, and it goes only with
+under its own name (its checkout directory's, here `SeedKata`), which leaves an empty `<file>.SeedKata`, and it goes only with
 the last claim:
 
-    ~/coworker/bin/downloads fetch FILE seedkata URL SHA_URL    # fetches (resuming), checks, claims
-    ~/coworker/bin/downloads claim FILE seedkata
-    ~/coworker/bin/downloads release FILE seedkata
+    ~/coworker/bin/downloads fetch FILE SeedKata URL SHA_URL    # fetches (resuming), checks, claims
+    ~/coworker/bin/downloads claim FILE SeedKata
+    ~/coworker/bin/downloads release FILE SeedKata
     ~/coworker/bin/downloads list [--verify]
 
 Shared VMs are in `~/coworker/vms`, used one project at a time through `~/coworker/bin/vms run`.
