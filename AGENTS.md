@@ -45,20 +45,20 @@ Installer ISOs and other large downloads, and VMs that projects share, follow th
 [coworker protocol](https://github.com/MojoKata/coworker): its commands are installed in
 `~/coworker/bin` by that repository's `install.sh` (`COWORKER_HOME` moves the whole folder). A
 download lives in `~/coworker/downloads` beside its SHA-256; a project that needs one claims it
-under its own name (here `diceseed`), which leaves an empty `<file>.diceseed`, and it goes only with
+under its own name (here `seedkata`), which leaves an empty `<file>.seedkata`, and it goes only with
 the last claim:
 
-    ~/coworker/bin/downloads fetch FILE diceseed URL SHA_URL    # fetches (resuming), checks, claims
-    ~/coworker/bin/downloads claim FILE diceseed
-    ~/coworker/bin/downloads release FILE diceseed
+    ~/coworker/bin/downloads fetch FILE seedkata URL SHA_URL    # fetches (resuming), checks, claims
+    ~/coworker/bin/downloads claim FILE seedkata
+    ~/coworker/bin/downloads release FILE seedkata
     ~/coworker/bin/downloads list [--verify]
 
 Shared VMs are in `~/coworker/vms`, used one project at a time through `~/coworker/bin/vms run`.
-Never download into this repository's folders. DiceSeed claims no download and no VM today.
+Never download into this repository's folders. SeedKata claims no download and no VM today.
 
-What the machine needs for DiceSeed (make, zip, the Foundation SDK, Nix, JDK 17, the Android SDK's
+What the machine needs for SeedKata (make, zip, the Foundation SDK, Nix, JDK 17, the Android SDK's
 platform 34 and build tools, and the hosts the builds reach) is in `.coworker/deps.json`, each with
-why. Every `make` run registers DiceSeed with coworker (`deps register`) and says what the machine
+why. Every `make` run registers SeedKata with coworker (`deps register`) and says what the machine
 lacks; it stops if coworker isn't installed. `~/coworker/bin/deps check .` lists what's missing,
 `deps install .` installs what a user can and prints how to get the tools that have their own
 installers, and the host packages are the machine owner's: `sudo ~/coworker/bin/deps install --sudo`.

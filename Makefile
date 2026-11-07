@@ -1,6 +1,6 @@
 SHELL := /bin/bash
 
-# The coworker protocol (MojoKata/coworker): every make run remembers DiceSeed on this machine and
+# The coworker protocol (MojoKata/coworker): every make run remembers SeedKata on this machine and
 # says what it lacks of .coworker/deps.json (~/coworker/bin/deps check . lists it); it stops if
 # coworker isn't installed.
 COWORKER_HOME ?= $(HOME)/coworker
