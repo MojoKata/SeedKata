@@ -38,3 +38,27 @@ Apps > Developer Mode); with it off, the connection is unavailable. On Linux, US
 udev rules shipped at `<sdk-root>/share/99-passport.rules`; a permission error opening the device means they
 are not installed (copy the file to `/etc/udev/rules.d/` and reload udev). Only drive hardware when the user
 asks for on-device work.
+
+## Large downloads and shared VMs
+
+Installer ISOs and other large downloads, and VMs that projects share, follow the
+[coworker protocol](https://github.com/MojoKata/coworker): its commands are installed in
+`~/coworker/bin` by that repository's `install.sh` (`COWORKER_HOME` moves the whole folder). A
+download lives in `~/coworker/downloads` beside its SHA-256; a project that needs one claims it
+under its own name (its checkout directory's, here `SeedKata`), which leaves an empty `<file>.SeedKata`, and it goes only with
+the last claim:
+
+    ~/coworker/bin/downloads fetch FILE SeedKata URL SHA_URL    # fetches (resuming), checks, claims
+    ~/coworker/bin/downloads claim FILE SeedKata
+    ~/coworker/bin/downloads release FILE SeedKata
+    ~/coworker/bin/downloads list [--verify]
+
+Shared VMs are in `~/coworker/vms`, used one project at a time through `~/coworker/bin/vms run`.
+Never download into this repository's folders. SeedKata claims no download and no VM today.
+
+What the machine needs for SeedKata (make, zip, the Foundation SDK, Nix, JDK 17, the Android SDK's
+platform 34 and build tools, and the hosts the builds reach) is in `.coworker/deps.json`, each with
+why. Every `make` run registers SeedKata with coworker (`deps register`) and says what the machine
+lacks; it stops if coworker isn't installed. `~/coworker/bin/deps check .` lists what's missing,
+`deps install .` installs what a user can and prints how to get the tools that have their own
+installers, and the host packages are the machine owner's: `sudo ~/coworker/bin/deps install --sudo`.
