@@ -44,6 +44,21 @@
       "package": "unzip",
       "platform": "ubuntu*",
       "why": "make zip: lists the archive it made"
+    },
+    {
+      "package": "docker-ce",
+      "platform": "rocky*",
+      "why": "make prime and make droid build in containers (nixos/nix, eclipse-temurin:17-jdk); Docker's own repository's package"
+    },
+    {
+      "package": "docker.io",
+      "platform": "debian*",
+      "why": "make prime and make droid build in containers (nixos/nix, eclipse-temurin:17-jdk)"
+    },
+    {
+      "package": "docker.io",
+      "platform": "ubuntu*",
+      "why": "make prime and make droid build in containers (nixos/nix, eclipse-temurin:17-jdk)"
     }
   ],
   "tools": [
@@ -51,31 +66,19 @@
       "tool": "foundation-sdk",
       "path": "~/.foundation/sdk/current",
       "how": "curl -sSfL https://sdk.foundation.xyz/latest/install.sh | bash   # README.md, Prerequisites",
-      "why": "make prime: the Foundation SDK builds, signs and packs the Prime app (the Makefile's FOUNDATION_SDK_ROOT)"
-    },
-    {
-      "tool": "nix",
-      "command": "nix",
-      "how": "the Nix installer from https://nixos.org/download (flakes on); 'foundation doctor' checks it",
-      "why": "make prime runs 'nix develop' on the Foundation SDK; the Makefile's JAVA_HOME is a Nix profile's JDK"
-    },
-    {
-      "tool": "jdk17",
-      "path": "~/.nix-profile/lib/openjdk",
-      "how": "nix profile install nixpkgs#jdk17",
-      "why": "make droid: Gradle and the Android build need JDK 17 (jvmTarget 17); the Makefile's JAVA_HOME"
+      "why": "make prime: the Foundation SDK builds, signs and packs the Prime app; the Makefile mounts it (~/.foundation, read-only) into the Nix container"
     },
     {
       "tool": "android-platform-34",
       "path": "~/android-sdk/platforms/android-34",
       "how": "~/android-sdk/cmdline-tools/latest/bin/sdkmanager 'platforms;android-34'",
-      "why": "make droid: compileSdk and targetSdk 34 (the Makefile's ANDROID_HOME is ~/android-sdk)"
+      "why": "make droid: compileSdk and targetSdk 34 (the Makefile mounts ANDROID_HOME, ~/android-sdk, read-only into the JDK 17 container)"
     },
     {
       "tool": "android-build-tools-34",
       "path": "~/android-sdk/build-tools/34.0.0",
       "how": "~/android-sdk/cmdline-tools/latest/bin/sdkmanager 'build-tools;34.0.0'",
-      "why": "make droid: Android Gradle Plugin 8.5's build tools for API 34"
+      "why": "make droid: Android Gradle Plugin 8.5's build tools for API 34 (mounted into the JDK 17 container)"
     },
     {
       "tool": "adb",
@@ -88,14 +91,6 @@
     {
       "host": "sdk.foundation.xyz",
       "why": "the Foundation SDK and its signed checksums"
-    },
-    {
-      "host": "nixos.org",
-      "why": "the Nix installer"
-    },
-    {
-      "host": "releases.nixos.org",
-      "why": "Nix's release tarballs"
     },
     {
       "host": "cache.nixos.org",
@@ -148,6 +143,18 @@
     {
       "host": "maven.google.com",
       "why": "Google's Maven repository (AndroidX, AGP)"
+    },
+    {
+      "host": "registry-1.docker.io",
+      "why": "Docker Hub: the nixos/nix and eclipse-temurin images the builds run in"
+    },
+    {
+      "host": "auth.docker.io",
+      "why": "Docker Hub: sign-in tokens for pulls"
+    },
+    {
+      "host": "production.cloudflare.docker.com",
+      "why": "Docker Hub: image layers"
     }
   ]
 }
